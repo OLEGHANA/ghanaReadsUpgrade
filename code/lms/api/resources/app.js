@@ -1,0 +1,40 @@
+// resources
+ var couchapp = require('couchapp')
+  , path = require('path')
+  ;
+
+ddoc = 
+  { _id:'_design/api'
+  , rewrites : 
+    [ {from:"/", to:'index.html'}
+    , {from:"/api", to:'../../'}
+    , {from:"/api/*", to:'../../*'}
+    , {from:"/*", to:'*'}
+    ]
+  }
+  ;
+
+ddoc.views = {
+	allResources: {
+           map: function(doc) {
+   				emit(1,doc._id);
+			}
+       },
+	allByAudience: {
+			   map: function(doc) {
+	  for(var cnt=0;cnt<doc.audience.length;cnt++){
+		if(doc.audience[cnt]=="teacher training"){
+			emit(null,doc._id);
+		}
+	   }
+	  }
+	 }
+};
+
+ddoc.validate_doc_update = function (newDoc, oldDoc, userCtx) {   
+  if (newDoc._deleted === true && userCtx.roles.indexOf('_admin') === -1) {
+    throw "Only admin can delete documents on this database.";
+  } 
+}
+
+module.exports = ddoc;
