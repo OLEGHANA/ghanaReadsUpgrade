@@ -23,7 +23,7 @@ mysql:
   ports:
     - "3306:3306"
   environment: 
-    - MYSQL_ROOT_PASSWORD=password
+    - MYSQL_ROOT_PASSWORD=oleoleole
 
 phpmyadmin:
   image: phpmyadmin/phpmyadmin
@@ -33,10 +33,21 @@ phpmyadmin:
     - "8082:80"
   environment:
     - PMA_USER=root
-    - PMA_PASSWORD=password
-    - PHP_UPLOAD_MAX_FILESIZE=100MB
+    - PMA_PASSWORD=oleoleole
+    - PHP_UPLOAD_MAX_FILESIZE=500MB
+
+couchdb:
+ image: apache/couchdb:1.6.1
+ ports:
+    - "5984:5984"
+ volumes:
+    - "./couch/data:/opt/couchdb/data"
+    - "./couch/log:/opt/couchdb/var/log"
 
 maildev:
   image: djfarrelly/maildev
   ports:
    - "8081:80"
+  links:
+    - couchdb
+    - ghanabell
