@@ -50,4 +50,3 @@ maildev:
    - "8081:80"
   links:
     - couchdb
-    - ghanabell
