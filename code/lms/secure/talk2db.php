@@ -60,9 +60,9 @@ function recordActionObjectDate($userID,$action,$object,$systemDateForm){
 	  $response = $actions->storeDoc($doc);
 }
 global $couchUrl;
-$couchUrl = 'http://pi:raspberry@127.0.0.1:5984';
+$couchUrl = 'http://127.0.0.1:5984';
 
-//error_reporting(E_ERROR);
+error_reporting(E_ERROR);
 
 include "quotes.php";
 
