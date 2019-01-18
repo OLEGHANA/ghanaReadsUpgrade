@@ -37,7 +37,7 @@ phpmyadmin:
     - PHP_UPLOAD_MAX_FILESIZE=500MB
 
 couchdb:
- image: apache/couchdb:1.6.1
+ image: apache/couchdb:2.3.0
  ports:
     - "5984:5984"
  volumes:
