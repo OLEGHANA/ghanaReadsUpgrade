@@ -1,4 +1,6 @@
-<?php ini_set("session.gc_maxlifetime","949999"); session_start();include "secure/talk2db.php";?>
+<?php ini_set("session.gc_maxlifetime","949999"); session_start();require __DIR__ . '/vendor/autoload.php';
+use  PHPOnCouch\CouchClient;;
+use PHPOnCouch\Exceptions;//include "secure/talk2db.php";?>
 <html>
 <head>
 <title>Open Learning Exchange - Ghana</title>
@@ -19,6 +21,29 @@ $messageLog = "";
 if(isset($_POST['loginid']))
 {
 	global $couchUrl;
+
+	$protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,strpos( $_SERVER["SERVER_PROTOCOL"],'/'))).'://';
+	$hostname = $_SERVER['HTTP_HOST'];
+	$port = "5984";
+	$couchUrl = $protocol.$hostname;
+	$urlParts = parse_url($couchUrl);
+	$couchUrl = $protocol.$urlParts['host'].":".$port;
+	echo $couchUrl;
+// couchAddress: window.location.protocol + '//' + window.location.hostname + ':2200',
+	# making a db connection
+	$client = new couchClient(
+	 $couchUrl, # host / DSN
+	 "firstdb" # database # this database must exist
+	);
+
+	/*if(!$client->databaseExists()){
+		$client->createDatabase();
+	}*/
+
+	//$databases = $client->listDatabases();
+	print_r( $client->listDatabases() );
+
+	/*
 	$members = new couchClient($couchUrl, "members");
 	// Get member
 	global $facilityId;
@@ -48,6 +73,7 @@ if(isset($_POST['loginid']))
 	} else{
 		///$messageLog = "Login ID & Password Mismatch. Try again ";
 	}
+	*/
 } 
 else {
 	
