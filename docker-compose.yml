@@ -15,6 +15,7 @@ php:
   environment:
     XDEBUG_CONFIG: remote_host=host.docker.internal
   links:
+    - "couchdb:database"
     - mysql
     - maildev
 
@@ -24,6 +25,13 @@ mysql:
     - "3306:3306"
   environment: 
     - MYSQL_ROOT_PASSWORD=oleoleole
+
+maildev:
+  image: djfarrelly/maildev
+  ports:
+   - "8081:80"
+  links:
+    - couchdb
 
 phpmyadmin:
   image: phpmyadmin/phpmyadmin
@@ -37,16 +45,10 @@ phpmyadmin:
     - PHP_UPLOAD_MAX_FILESIZE=500MB
 
 couchdb:
- image: apache/couchdb:2.3.0
+ image: apache/couchdb:2.2.0
  ports:
     - "5984:5984"
  volumes:
-    - "./couch/data:/usr/local/var/lib/couchdb"
-    - "./couch/log:/usr/local/var/log/couchdb"
+    - "./couch/data:/opt/couchdb/data"
+    - "./couch/log:/opt/couchdb/var/log"
 
-maildev:
-  image: djfarrelly/maildev
-  ports:
-   - "8081:80"
-  links:
-    - couchdb
