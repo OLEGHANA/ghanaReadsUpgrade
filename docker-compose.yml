@@ -49,6 +49,6 @@ couchdb:
  ports:
     - "5984:5984"
  volumes:
-    - "./couch/data:/opt/couchdb/data
+    - "./couch/data:/opt/couchdb/data"
     - "./couch/log:/opt/couchdb/var/log"
 
