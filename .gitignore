@@ -1,3 +1,5 @@
 # Couchdb doc
 #.couch/*
 #.couch
+.couch/data/shards/*
+couch/data/shards/*
