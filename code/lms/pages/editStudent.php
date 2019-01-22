@@ -1,4 +1,8 @@
-<?php session_start(); include "../secure/talk2db.php";error_reporting(1);?>
+<?php session_start(); error_reporting(1);
+require $_SERVER['DOCUMENT_ROOT'].'/lms/secure/talk2db.php';
+use PHPOnCouch\CouchClient;
+use PHPOnCouch\Exceptions;
+use PHPOnCouch\CouchDocument;?>
 <html>
 <head>
 <title>Open Learning Exchange - Ghana</title>
@@ -62,10 +66,12 @@ if(isset($_POST['pass']))
 	// save doc to couch and for responce->id
 	$response = $members->storeDoc($doc);
 	try {
-			$fileUniqueID = $members->getUuids(1);
-			// add attached image to document with specified id from response
-			$fileName = $fileUniqueID[0].'.'.end(explode(".", $_FILES['uploadedfile']['name']));
-			$members->storeAttachment($members->getDoc($response->id),$_FILES['uploadedfile']['tmp_name'], mime_content_type($_FILES['uploadedfile']['tmp_name']),$fileName);
+			if(isset($_FILES['uploadedfile']['name'])){
+				$fileUniqueID = $members->getUuids(1);
+				// add attached image to document with specified id from response
+				$fileName = $fileUniqueID[0].'.'.end(explode(".", $_FILES['uploadedfile']['name']));
+				$members->storeAttachment($members->getDoc($response->id),$_FILES['uploadedfile']['tmp_name'], mime_content_type($_FILES['uploadedfile']['tmp_name']),$fileName);
+			}
 	} catch ( Exception $e ) {
 		print ("No photo uploaded");
 	}

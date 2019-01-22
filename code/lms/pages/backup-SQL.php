@@ -1,4 +1,8 @@
-<?php session_start(); error_reporting(1);include "../secure/talk2db.php";?>
+<?php session_start(); 
+require $_SERVER['DOCUMENT_ROOT'].'/lms/secure/talk2db.php';
+use PHPOnCouch\CouchClient;
+use PHPOnCouch\Exceptions;
+use PHPOnCouch\CouchDocument;?>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <title>OLE Ghana</title>
 <?

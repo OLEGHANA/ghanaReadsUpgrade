@@ -1,5 +1,7 @@
 <?php
-
+use PHPOnCouch\CouchClient;
+use PHPOnCouch\Exceptions;
+use PHPOnCouch\CouchDocument;
 global $couchUrl;
 global $facilityId;
 $actionTrue = false;
@@ -56,7 +58,7 @@ if(isset($_POST['vBook']))
 			  "level" => $groupDoc->level[0]
 			);
 			$response = $feedbacks->storeDoc($doc);
-	}
+		}
 	echo "| Video |";
 	$actionTrue = true;
 	recordActionObject($_SESSION['lmsUserID'],"Assigned video book task for the week ",$_POST['level']);

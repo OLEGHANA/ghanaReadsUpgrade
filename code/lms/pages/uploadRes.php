@@ -1,5 +1,9 @@
-<?php session_start();include "../secure/talk2db.php";
-function custom_mime_content_type($filename) {
+<?php session_start();
+require $_SERVER['DOCUMENT_ROOT'].'/lms/secure/talk2db.php';
+use PHPOnCouch\CouchClient;
+use PHPOnCouch\Exceptions;
+use PHPOnCouch\CouchDocument;
+function custom_mime_content_type($fileExtension) {
 
 	$mime_types = array(
 
@@ -55,22 +59,15 @@ function custom_mime_content_type($filename) {
 
 		// open office
 		'odt' => 'application/vnd.oasis.opendocument.text',
-		'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+		'ods' => 'application/vnd.oasis.opendocument.spreadsheet'
 	);
 
-	$ext = strtolower(array_pop(explode('.',$filename)));
-	if (array_key_exists($ext, $mime_types)) {
-		return $mime_types[$ext];
-	}
-	elseif (function_exists('finfo_open')) {
-		$finfo = finfo_open(FILEINFO_MIME);
-		$mimetype = finfo_file($finfo, $filename);
-		finfo_close($finfo);
-		return $mimetype;
-	}
-	else {
+
+    if ($mime_types[$fileExtension]!=null){
+        return $mime_types[$fileExtension];
+    }	else {
 		ob_start();
-		system('file -i -b '.$filename);
+		system('file -i -b '.$fileExtension);
 		$output = ob_get_clean();
 		$output = explode("; ", $output);
 		if (is_array($output)) {
@@ -129,9 +126,9 @@ if(isset($_POST['title']))
 	$doc = new stdClass();
 	$docType = end(explode(".", $_FILES['uploadedfile']['name']));
 	$doc->legacy = array(
-	"id"=>"",
-	"type"=> strtolower($docType)
-	);
+    	"id"=>"",
+    	"type"=> strtolower($docType)
+    	);
 	$doc->type=$_POST['resType'];
 	$doc->kind='Resource';
 	$doc->language=$_POST['Language'];
@@ -154,16 +151,14 @@ if(isset($_POST['title']))
 		$doc->questions= (object)array();
 	}
 	$responce = $resources->storeDoc($doc);
-	print_r($responce);
 	try {
 		// add attached to document with specified id from response
-		$fileName = $responce->id.'.'.end(explode(".", $_FILES['uploadedfile']['name']));
-		$resources->storeAttachment($resources->getDoc($responce->id),$_FILES['uploadedfile']['tmp_name'], custom_mime_content_type($_FILES['uploadedfile']['tmp_name']),$fileName);
-			
-		///$resources->storeAttachment($resources->getDoc($responce->id),$_FILES['uploadedfile']['tmp_name'], mime_content_type($_FILES['uploadedfile']['tmp_name']));
-		
+		$fileName = $responce->id.'.'.strtolower($docType); 
+        $docUpdate = $resources->getDoc($responce->id);
+        $docMime_type = custom_mime_content_type(strtolower($docType));
+        $resources->storeAttachment($docUpdate,$_FILES['uploadedfile']['name'],$docMime_type ,$fileName);
 	} catch ( Exception $e ) {
-		print ("No Resource to uploaded<br>");
+		print ("No Resource to uploaded<br>".$e);
 	}
 	$resDoc = $resources->getDoc($responce->id);
 	$resDoc->legacy->id = $responce->id;

@@ -1,4 +1,8 @@
-<?php session_start(); include "../secure/talk2db.php";?>
+<?php session_start(); 
+require $_SERVER['DOCUMENT_ROOT'].'/lms/secure/talk2db.php';
+use PHPOnCouch\CouchClient;
+use PHPOnCouch\Exceptions;
+use PHPOnCouch\CouchDocument;?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -18,7 +22,8 @@ if(isset($_GET['resid']))
 	}
 	//echo $arrayImage[0];
 	//echo $_SERVER['SERVER_NAME'];
-	$mystring = "http://".$_SERVER['SERVER_NAME'].":5984/resources/".$_GET['resid']."/".urlencode($arrayFiles[0])."";
+
+	$mystring = $couchUrl."/resources/".$_GET['resid']."/".urlencode($arrayFiles[0])."";
 	recordActionObjectDate($_SESSION['lmsUserID'],"Viewed Resource",$_GET['resid'],$_GET['systDate']);
 	die('<META HTTP-EQUIV=Refresh CONTENT="0; URL='.$mystring.'">');
 			

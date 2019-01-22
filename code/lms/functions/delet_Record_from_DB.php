@@ -1,6 +1,9 @@
 <title>Admin Updates</title>
 <?php
-include "../secure/talk2db.php";
+require $_SERVER['DOCUMENT_ROOT'].'/lms/secure/talk2db.php';
+use PHPOnCouch\CouchClient;
+use PHPOnCouch\Exceptions;
+use PHPOnCouch\CouchDocument;
 global $couchUrl;
 
 //global $levels;

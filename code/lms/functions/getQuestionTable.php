@@ -1,4 +1,9 @@
-<?php session_start();include "../secure/talk2db.php";?>
+<?php session_start();
+require $_SERVER['DOCUMENT_ROOT'].'/lms/secure/talk2db.php';
+use PHPOnCouch\CouchClient;
+use PHPOnCouch\Exceptions;
+use PHPOnCouch\CouchDocument;
+?>
 <table width="427" border="0" cellpadding="2" cellspacing="2"  style="color:#FFF;">
   <tr>
     <td width="31" bgcolor="#3366FF">Add</td>

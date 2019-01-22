@@ -1,4 +1,4 @@
-<?php session_start(); error_reporting(1);?>
+<?php session_start(); ?>
 <html>
 <head>
 <title>Open Learning Exchange - Ghana</title>

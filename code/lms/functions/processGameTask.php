@@ -1,5 +1,7 @@
 <?php
-
+use PHPOnCouch\CouchClient;
+use PHPOnCouch\Exceptions;
+use PHPOnCouch\CouchDocument;
 global $couchUrl;
 global $facilityId;
 $actionTrue = false;

@@ -1,5 +1,8 @@
 <?php
-include "../secure/talk2db.php";
+require $_SERVER['DOCUMENT_ROOT'].'/lms/secure/talk2db.php';
+use PHPOnCouch\CouchClient;
+use PHPOnCouch\Exceptions;
+use PHPOnCouch\CouchDocument;
 if(isset($_GET['lang2'])){
 	$language = $_GET['lang2'];
 	$level = $_GET['level2'];

@@ -1,10 +1,13 @@
-<?php ini_set("session.gc_maxlifetime","10800");session_set_cookie_params(10800); session_start();//error_reporting(1);?>
+<?php ini_set("session.gc_maxlifetime","10800");session_set_cookie_params(10800); session_start();
+require __DIR__ ."/secure/talk2db.php";
+use PHPOnCouch\CouchClient;
+use PHPOnCouch\Exceptions;?>
 <html>
 <head>
 <title>Open Learning Exchange - Ghana</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="Copyright" content="ole.org.gh">
-<meta name="description" content="OMS Ole Ghana">
+<meta name="description" content="LMS Ole Ghana">
 <meta name="keywords" content="Admin Page">
 <meta name="author" content="Open Learning Exchang">
 <meta name="language" content="English">
@@ -61,7 +64,7 @@ for($cnt=0;$cnt<= sizeof($_SESSION['role']); $cnt++){
 //		break;
 	}
 }
-$roles = $roles."</ul>";
+$rolesMenu = $roles."</ul>";
 if(sizeof($_SESSION['role'])<1)
 {
 	$mystring = "index.php";
@@ -83,7 +86,7 @@ var fmat= now.getFullYear()+'-'+ (now.getMonth()+1)+'-'+(now.getDay()+10)+' '+(n
 
 <div id="wrapper" style="background: #fff url(images/bg_kiri.png) repeat-y;">
 	<div id="leftBar">
-	<?php echo $roles;?>
+	<?php echo $rolesMenu;?>
 	</div>
 	<div id="rightContent">
 	<h3>Teacher</h3>
@@ -129,7 +132,7 @@ var fmat= now.getFullYear()+'-'+ (now.getMonth()+1)+'-'+(now.getDay()+10)+' '+(n
 	</div>
 <div class="clear"></div>
 <div id="footer">
-	&copy; 2012 Open Learning Exchange - Ghana <br>
+	&copy; 2018 Open Learning Exchange - Ghana <br>
 </div>
 </div>
 </body>

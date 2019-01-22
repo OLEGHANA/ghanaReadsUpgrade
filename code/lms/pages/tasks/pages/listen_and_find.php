@@ -1,5 +1,9 @@
-<?php session_start();include "../../../secure/talk2db.php";include "../../../functions/processGameTask.php";?>
-<html>
+<?php session_start();
+require $_SERVER['DOCUMENT_ROOT'].'/lms/secure/talk2db.php';
+use PHPOnCouch\CouchClient;
+use PHPOnCouch\Exceptions;
+use PHPOnCouch\CouchDocument;
+include $_SERVER['DOCUMENT_ROOT'].'/lms/functions/processGameTask.php';?><html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" href="../../../css/style.css">

@@ -1,12 +1,13 @@
-<?php ini_set("session.gc_maxlifetime","949999"); session_start();require __DIR__ . '/vendor/autoload.php';
-use  PHPOnCouch\CouchClient;;
-use PHPOnCouch\Exceptions;//include "secure/talk2db.php";?>
+<?php ini_set("session.gc_maxlifetime","949999");
+require __DIR__ ."/secure/talk2db.php";
+use PHPOnCouch\CouchClient;
+use PHPOnCouch\Exceptions;?>
 <html>
 <head>
 <title>Open Learning Exchange - Ghana</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="Copyright" content="ole.org.gh">
-<meta name="description" content="OMS Ole Ghana">
+<meta name="description" content="lMS Ole Ghana">
 <meta name="keywords" content="Admin Page">
 <meta name="author" content="Open Learning Exchang">
 <meta name="language" content="English">
@@ -28,22 +29,7 @@ if(isset($_POST['loginid']))
 	$couchUrl = $protocol.$hostname;
 	$urlParts = parse_url($couchUrl);
 	$couchUrl = $protocol.$urlParts['host'].":".$port;
-	echo $couchUrl;
-// couchAddress: window.location.protocol + '//' + window.location.hostname + ':2200',
-	# making a db connection
-	$client = new couchClient(
-	 $couchUrl, # host / DSN
-	 "firstdb" # database # this database must exist
-	);
 
-	/*if(!$client->databaseExists()){
-		$client->createDatabase();
-	}*/
-
-	//$databases = $client->listDatabases();
-	print_r( $client->listDatabases() );
-
-	/*
 	$members = new couchClient($couchUrl, "members");
 	// Get member
 	global $facilityId;
@@ -51,29 +37,24 @@ if(isset($_POST['loginid']))
 	
 	///print $key;
 	$viewResults = $members->include_docs(TRUE)->key($key)->getView('api', 'facilityLogin');
-	//print_r($viewResults);
-	foreach($viewResults->rows as $row) {
-		///print_r($row);
-		
-	}
-	$member = $viewResults->rows[0]->doc;
-	$password = $_POST['pass'];
 	
-	if($member->pass == md5($password)) {
-		
+	//foreach($viewResults->rows as $row) {
+	//	///print_r($row);
+	//}
+	$member = $viewResults->rows[0]->doc;
+	if($member->pass == md5($_POST['pass'])) {
 		$_SESSION['lmsUserID'] = $viewResults->rows[0]->id;
-		
-		$_SESSION['role'] = $member->roles;
+		$_SESSION['role'] = $member->role;
 		$_SESSION['name'] = $member->firstName." ".$member->middleNames." ".$member->lastName;
 		$_SESSION['facilityID'] = $facilityId;
 		$_SESSION['dateTime'] = $_POST['systemDateForm'];
 		// Redirect user to dashboard page
 		recordActionObject($_SESSION['lmsUserID'],"Loged in",$_POST['systemDateForm']);
+		//print_r($_SESSION['role']);
 		die('<script type="text/javascript">window.location.replace("dasboard.php")</script>');
 	} else{
 		///$messageLog = "Login ID & Password Mismatch. Try again ";
 	}
-	*/
 } 
 else {
 	
@@ -111,7 +92,7 @@ body {
   <div class="inHeaderLogin">
     <div style="width: 200px; height: 50px; padding-top: 10px; float: right; text-align: left; color: #3C429A;"><b><!--<a href="TM/oms/">TM OMS</a> </b>&nbsp;&nbsp;&nbsp;&nbsp;|| &nbsp;&nbsp;&nbsp;&nbsp;<b><a href="TM/games/">TM STUDENT&nbsp;</a>--></b><span style="text-align: left">Learning Management System<br>
   Language : English<br>
-  Version 1.01</span></div>
+  Version 2.03</span></div>
   </div>
 </div>
 

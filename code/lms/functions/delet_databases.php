@@ -1,3 +1,9 @@
+<?php
+require $_SERVER['DOCUMENT_ROOT'].'/lms/secure/talk2db.php';
+use PHPOnCouch\CouchClient;
+use PHPOnCouch\Exceptions;
+use PHPOnCouch\CouchDocument;
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -22,7 +28,7 @@ $i = 1;
 
 foreach($dbs as $db) {
 	while ($i < 50){
-		exec("curl -XDELETE http://pi:raspberry@raspberrypi.local:5984/" . $db);
+		exec("curl -XDELETE ".$couchURL."" . $db);
 		$i++;
   }
   $i=1;
