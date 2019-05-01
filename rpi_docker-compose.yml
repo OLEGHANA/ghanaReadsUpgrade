@@ -21,7 +21,7 @@ php:
     - maildev
 
 mysql:
-  image: mysql:latest
+  image: amd64/mysql:latest
   ports:
     - "3306:3306"
   environment: 
