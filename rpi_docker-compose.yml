@@ -27,6 +27,13 @@ services:
       - PMA_PASSWORD=oleoleole
       - PHP_UPLOAD_MAX_FILESIZE=500MB
 
+  mysql:
+    image: amd64/mysql:latest
+    ports:
+      - "3306:3306"
+    environment: 
+      - MYSQL_ROOT_PASSWORD=oleoleole
+
   web:
     image: arm32v7/nginx:latest
     ports:
@@ -39,13 +46,6 @@ services:
         - php
         - mysql
         - phpmyadmin
-
-  mysql:
-    image: amd64/mysql:latest
-    ports:
-      - "3306:3306"
-    environment: 
-      - MYSQL_ROOT_PASSWORD=oleoleole
 
   maildev:
     image: djfarrelly/maildev
