@@ -35,7 +35,7 @@ maildev:
     - couchdb
 
 phpmyadmin:
-  image: phpmyadmin/phpmyadmin
+  image: ebspace/armhf-phpmyadmin
   links:
     - mysql:db
   ports:
