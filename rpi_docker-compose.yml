@@ -15,7 +15,8 @@ services:
       - MYSQL_ROOT_PASSWORD=rootpassword
     links:
       - "couchdb:database"
- phpmyadmin:
+      
+  phpmyadmin:
     image: bitnami/phpmyadmin:latest
     links:
       - mysql:db
