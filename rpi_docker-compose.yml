@@ -1,4 +1,3 @@
-version: "3.2"
 services:
   php:
     container_name: php
@@ -61,3 +60,4 @@ services:
    volumes:
       - "./couch/data:/opt/couchdb/data"
       - "./couch/log:/opt/couchdb/var/log"
+version: "2.2"
