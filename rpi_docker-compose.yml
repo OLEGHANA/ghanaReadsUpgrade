@@ -10,7 +10,7 @@ web:
     - php
 
 php:
-  build: arm32v7/php:latest
+  image: arm32v7/php:latest
   volumes: 
     - ./code:/code
   environment:
