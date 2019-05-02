@@ -1,5 +1,31 @@
 version: "0.21"
 services:
+  php:
+    build: './php/'
+    volumes: 
+      - ./code:/code
+    environment:
+      XDEBUG_CONFIG: remote_host=host.docker.internal
+  
+  mysql:
+    image: mysql:5.6.40
+    networks:
+      - backend
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+    links:
+      - "couchdb:database"
+ phpmyadmin:
+    image: bitnami/phpmyadmin:latest
+    links:
+      - mysql:db
+    ports:
+      - "8082:80"
+    environment:
+      - PMA_USER=root
+      - PMA_PASSWORD=oleoleole
+      - PHP_UPLOAD_MAX_FILESIZE=500MB
+
   web:
     image: arm32v7/nginx:latest
     ports:
@@ -12,22 +38,6 @@ services:
         - php
         - mysql
         - phpmyadmin
-  
-  php:
-    build: './php/'
-    volumes: 
-      - ./code:/code
-    environment:
-      XDEBUG_CONFIG: remote_host=host.docker.internal
-
-  mysql:
-    image: mysql:5.6.40
-    networks:
-      - backend
-    environment:
-      - MYSQL_ROOT_PASSWORD=rootpassword
-    links:
-      - "couchdb:database"
 
   mysql:
     image: amd64/mysql:latest
@@ -42,17 +52,6 @@ services:
      - "8081:80"
     links:
       - couchdb
-
-  phpmyadmin:
-    image: bitnami/phpmyadmin:latest
-    links:
-      - mysql:db
-    ports:
-      - "8082:80"
-    environment:
-      - PMA_USER=root
-      - PMA_PASSWORD=oleoleole
-      - PHP_UPLOAD_MAX_FILESIZE=500MB
 
   couchdb:
    image: treehouses/couchdb:2.0.0
