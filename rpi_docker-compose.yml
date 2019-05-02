@@ -1,63 +1,63 @@
 version: "0.21"
 services:
-web:
-  image: arm32v7/nginx:latest
-  ports:
-    - "8080:80"
-  volumes:
-    - ./code:/code
-    - ./nginx.conf:/etc/nginx/conf.d/default.conf
-    - ./custom.ini:/usr/local/etc/php/conf.d/custom.ini
-  depends_on:
-      - php
-      - mysql
-      - phpmyadmin
+  web:
+    image: arm32v7/nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./code:/code
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./custom.ini:/usr/local/etc/php/conf.d/custom.ini
+    depends_on:
+        - php
+        - mysql
+        - phpmyadmin
+  
+  php:
+    build: './php/'
+    volumes: 
+      - ./code:/code
+    environment:
+      XDEBUG_CONFIG: remote_host=host.docker.internal
 
-php:
-  build: './php/'
-  volumes: 
-    - ./code:/code
-  environment:
-    XDEBUG_CONFIG: remote_host=host.docker.internal
+  mysql:
+    image: mysql:5.6.40
+    networks:
+      - backend
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+    links:
+      - "couchdb:database"
 
-mysql:
-  image: mysql:5.6.40
-  networks:
-    - backend
-  environment:
-    - MYSQL_ROOT_PASSWORD=rootpassword
-  links:
-    - "couchdb:database"
+  mysql:
+    image: amd64/mysql:latest
+    ports:
+      - "3306:3306"
+    environment: 
+      - MYSQL_ROOT_PASSWORD=oleoleole
 
-mysql:
-  image: amd64/mysql:latest
-  ports:
-    - "3306:3306"
-  environment: 
-    - MYSQL_ROOT_PASSWORD=oleoleole
+  maildev:
+    image: djfarrelly/maildev
+    ports:
+     - "8081:80"
+    links:
+      - couchdb
 
-maildev:
-  image: djfarrelly/maildev
-  ports:
-   - "8081:80"
-  links:
-    - couchdb
+  phpmyadmin:
+    image: bitnami/phpmyadmin:latest
+    links:
+      - mysql:db
+    ports:
+      - "8082:80"
+    environment:
+      - PMA_USER=root
+      - PMA_PASSWORD=oleoleole
+      - PHP_UPLOAD_MAX_FILESIZE=500MB
 
-phpmyadmin:
-  image: bitnami/phpmyadmin:latest
-  links:
-    - mysql:db
-  ports:
-    - "8082:80"
-  environment:
-    - PMA_USER=root
-    - PMA_PASSWORD=oleoleole
-    - PHP_UPLOAD_MAX_FILESIZE=500MB
-
-couchdb:
- image: treehouses/couchdb:2.0.0
- ports:
-    - "5984:5984"
- volumes:
-    - "./couch/data:/opt/couchdb/data"
-    - "./couch/log:/opt/couchdb/var/log"
+  couchdb:
+   image: treehouses/couchdb:2.0.0
+   ports:
+      - "5984:5984"
+   volumes:
+      - "./couch/data:/opt/couchdb/data"
+      - "./couch/log:/opt/couchdb/var/log"
