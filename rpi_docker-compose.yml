@@ -1,7 +1,7 @@
-version: "2"
+version: "3"
 services:
   php:
-    build: './php/'
+    image: php:latest
     volumes: 
       - ./code:/code
     environment:
