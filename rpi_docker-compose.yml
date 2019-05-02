@@ -1,4 +1,7 @@
+version: "3.2"
+services:
   php:
+    container_name: php
     image: php:latest
     volumes: 
       - ./code:/code
@@ -10,6 +13,7 @@
       - maildev
   
   mysql:
+    container_name: mysql
     image: mysql:5.6.40
     networks:
       - backend
@@ -19,6 +23,7 @@
       - "couchdb:database"
       
   phpmyadmin:
+    container_name: phpmyadmin
     image: bitnami/phpmyadmin:latest
     links:
       - mysql:db
@@ -30,6 +35,7 @@
       - PHP_UPLOAD_MAX_FILESIZE=500MB
 
   mysql:
+    container_name: mysql
     image: amd64/mysql:latest
     ports:
       - "3306:3306"
@@ -37,6 +43,7 @@
       - MYSQL_ROOT_PASSWORD=oleoleole
 
   web:
+    container_name: web
     image: arm32v7/nginx:latest
     ports:
       - "8080:80"
@@ -48,6 +55,7 @@
       - php
 
   maildev:
+    container_name: maildev
     image: djfarrelly/maildev
     ports:
      - "8081:80"
@@ -55,6 +63,7 @@
       - couchdb
 
   couchdb:
+    container_name: couchdb
    image: treehouses/couchdb:2.0.0
    ports:
       - "5984:5984"
