@@ -10,7 +10,6 @@ services:
     links:
       - "couchdb:database"
       - mysql
-      - maildev
   
   mysql:
     container_name: mysql
