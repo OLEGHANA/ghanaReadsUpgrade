@@ -1,4 +1,4 @@
-version: "3"
+version: "4"
 services:
   php:
     image: php:latest
@@ -6,6 +6,10 @@ services:
       - ./code:/code
     environment:
       XDEBUG_CONFIG: remote_host=host.docker.internal
+    links:
+      - "couchdb:database"
+      - mysql
+      - maildev
   
   mysql:
     image: mysql:5.6.40
@@ -46,6 +50,8 @@ services:
         - php
         - mysql
         - phpmyadmin
+    links:
+      - php
 
   maildev:
     image: djfarrelly/maildev
