@@ -152,11 +152,19 @@ if(isset($_POST['title']))
 	}
 	$responce = $resources->storeDoc($doc);
 	try {
+		try {
+	// add attached image to document with specified id from response
+			$fileName = $responce->id.'.'.end(explode(".", $_FILES['uploadedfile']['name']));
+			$members->storeAttachment($resources->getDoc($responce->id),$_FILES['uploadedfile']['tmp_name'], mime_content_type($_FILES['uploadedfile']['tmp_name']),$fileName);
+	} catch ( Exception $e ) {
+		print ("No photo uploaded<br>");
+	}
+		
 		// add attached to document with specified id from response
-		$fileName = $responce->id.'.'.strtolower($docType); 
-        $docUpdate = $resources->getDoc($responce->id);
-        $docMime_type = custom_mime_content_type(strtolower($docType));
-        $resources->storeAttachment($docUpdate,$_FILES['uploadedfile']['name'],$docMime_type ,$fileName);
+		// $fileName = $responce->id.'.'.strtolower($docType); 
+        // $docUpdate = $resources->getDoc($responce->id);
+        // $docMime_type = custom_mime_content_type(strtolower($docType));
+        // $resources->storeAttachment($docUpdate,$_FILES['uploadedfile']['name'],$docMime_type ,$fileName);
 	} catch ( Exception $e ) {
 		print ("No Resource to uploaded<br>".$e);
 	}
